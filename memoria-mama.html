@@ -237,6 +237,16 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   font-size:16px;color:rgba(255,255,255,0.5);margin-top:12px;
 }
 
+.video-section{
+  padding:70px 24px;
+  background:linear-gradient(180deg,var(--cream) 0%,var(--warm) 100%);
+}
+.song-card:hover{
+  background:rgba(29,185,84,0.08);
+  border-color:rgba(29,185,84,0.3);
+  transform:translateY(-2px);
+  transition:all 0.2s;
+}
 @media(max-width:480px){
   .counter-blocks{flex-wrap:wrap;}
   .counter-block{min-width:120px;}
@@ -321,7 +331,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       Su canción
       <div class="eyebrow-line" style="background:var(--rose-lt);"></div>
     </div>
-    <div class="song-card">
+    <div class="song-card" id="song-card-link" onclick="openSong()" style="cursor:pointer;" title="Escuchar en Spotify">
       <img class="song-art" id="song-art-img" src="" alt="">
       <div class="song-info">
         <div class="song-title" id="song-title-text">Canción</div>
@@ -331,7 +341,11 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <div class="bar"></div><div class="bar"></div><div class="bar"></div>
         <div class="bar"></div><div class="bar"></div>
       </div>
+      <div style="margin-left:10px;opacity:0.7;transition:opacity 0.2s;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      </div>
     </div>
+    <div style="margin-top:14px;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;">Toca para escuchar en Spotify</div>
   </section>
 
   <!-- PHOTOS -->
@@ -345,6 +359,23 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <h2 class="section-title">Recuerdos que atesoramos</h2>
     </div>
     <div id="photos-grid" class="photos-grid"></div>
+  </section>
+
+  <!-- VIDEO SECTION -->
+  <section class="video-section" id="video-section" style="display:none;">
+    <div style="text-align:center;margin-bottom:28px;">
+      <div class="section-label" style="justify-content:center;">
+        <div class="eyebrow-line"></div>
+        Con todo mi amor
+        <div class="eyebrow-line"></div>
+      </div>
+      <h2 class="section-title" style="font-style:italic;">Un mensaje para ti</h2>
+    </div>
+    <div style="max-width:380px;margin:0 auto;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(74,40,48,0.2);position:relative;">
+      <video id="main-video" playsinline controls
+        style="width:100%;display:block;background:#1a0810;">
+      </video>
+    </div>
   </section>
 
   <!-- FOOTER -->
@@ -479,6 +510,17 @@ function render(d){
   // Brand
   if(d.nombreNegocio) document.getElementById('footer-brand').textContent = d.nombreNegocio;
 
+  // Main video section (shown after photos)
+  if(d.videoUrl){
+    var mainVid = document.getElementById('main-video');
+    mainVid.src = d.videoUrl;
+    document.getElementById('video-section').style.display = 'block';
+  }
+
+  // Store song data for Spotify link
+  window._songName = d.songName || '';
+  window._songArtist = d.songArtist || '';
+
   // Video intro
   if(d.videoUrl){
     var vid = document.getElementById('intro-video');
@@ -513,6 +555,16 @@ function skipIntro(){
   document.getElementById('intro-screen').classList.remove('show');
   document.getElementById('intro-video').pause();
   showMain();
+}
+
+function openSong(){
+  var name = window._songName || '';
+  var artist = window._songArtist || '';
+  if(!name) return;
+  // Try Spotify search URL
+  var query = encodeURIComponent(name + ' ' + artist);
+  var spotifyUrl = 'https://open.spotify.com/search/' + query;
+  window.open(spotifyUrl, '_blank');
 }
 
 function showMain(){
