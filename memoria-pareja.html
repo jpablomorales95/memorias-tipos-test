@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuestra Memoria</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0a09;--bg2:#111009;--bg3:#181613;--gold:#c9956e;--glt:#e8c4a0;--cr:#f2ebe2;--mt:#7a7068;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--cr);min-height:100vh;-webkit-font-smoothing:antialiased;}
+#loader{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;}
+.ll{font-family:'Cormorant Garamond',serif;font-size:18px;letter-spacing:4px;color:var(--gold);margin-bottom:16px;font-style:italic;}
+.ld{display:flex;gap:8px;}
+.ldt{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:p 1.2s ease-in-out infinite;}
+.ldt:nth-child(2){animation-delay:0.2s;}.ldt:nth-child(3){animation-delay:0.4s;}
+@keyframes p{0%,100%{opacity:0.15;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}
+#intro{position:fixed;inset:0;background:#0b0a09;z-index:90;display:none;align-items:center;justify-content:center;flex-direction:column;}
+#intro.on{display:flex;}
+#intro video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.5;}
+.ic{position:relative;z-index:2;text-align:center;padding:40px;}
+.it{font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.in{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,12vw,80px);font-weight:700;color:var(--cr);}
+.in em{color:var(--gold);}
+.is{position:absolute;bottom:40px;right:40px;font-size:11px;color:rgba(255,255,255,0.4);cursor:pointer;letter-spacing:2px;border:1px solid rgba(255,255,255,0.15);padding:8px 14px;transition:all 0.3s;}
+.is:hover{color:white;border-color:white;}
+#app{display:none;}
+#app.on{display:block;}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(201,149,110,0.07) 0%,transparent 70%);}
+.eyb{font-size:10px;letter-spacing:6px;text-transform:uppercase;color:var(--mt);margin-bottom:20px;}
+.intro-text{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--mt);margin-bottom:8px;}
+.names{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,11vw,88px);font-weight:700;color:var(--cr);line-height:1.05;margin-bottom:6px;}
+.names em{color:var(--gold);font-style:italic;}
+.ddate{font-size:14px;color:var(--mt);letter-spacing:2px;font-style:italic;}
+.divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:28px auto;}
+.message{font-family:'Cormorant Garamond',serif;font-size:clamp(17px,3.5vw,24px);color:var(--cr);line-height:1.75;max-width:520px;font-style:italic;}
+.song-sec{padding:60px 24px;background:var(--bg2);text-align:center;display:none;}
+.song-lbl{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--mt);margin-bottom:20px;}
+.song-card{display:inline-flex;align-items:center;gap:14px;background:rgba(201,149,110,0.06);border:1px solid rgba(201,149,110,0.2);border-radius:60px;padding:12px 22px 12px 12px;}
+.song-img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid rgba(201,149,110,0.3);animation:spin 8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.song-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--cr);font-style:italic;text-align:left;}
+.song-artist{font-size:11px;color:var(--mt);text-align:left;margin-top:2px;}
+.bars{display:flex;align-items:flex-end;gap:3px;margin-left:6px;}
+.bar{width:3px;border-radius:2px;background:var(--gold);animation:b 1s ease-in-out infinite;}
+.bar:nth-child(1){height:10px}.bar:nth-child(2){height:18px;animation-delay:.15s}.bar:nth-child(3){height:14px;animation-delay:.3s}.bar:nth-child(4){height:22px;animation-delay:.1s}.bar:nth-child(5){height:12px;animation-delay:.25s}
+@keyframes b{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+.photos-sec{padding:70px 24px;display:none;}
+.photos-title{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,5vw,40px);font-weight:300;color:var(--cr);text-align:center;margin-bottom:36px;font-style:italic;}
+.pgrid{max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pgrid img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;}
+.cnt-sec{padding:60px 24px;text-align:center;background:var(--bg3);}
+.cnt-lbl{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;color:var(--mt);margin-bottom:32px;font-style:italic;}
+.cnt-row{display:flex;justify-content:center;gap:0;}
+.cnt-blk{flex:1;max-width:120px;padding:24px 12px;position:relative;}
+.cnt-blk:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;bottom:20%;width:1px;background:rgba(201,149,110,0.15);}
+.cnt-n{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,9vw,64px);font-weight:700;color:var(--gold);line-height:1;display:block;}
+.cnt-u{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--mt);margin-top:6px;display:block;}
+.foot{padding:48px 24px;background:var(--bg2);text-align:center;}
+.foot-brand{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:12px;}
+.foot-txt{font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,0.3);font-style:italic;}
+</style>
+</head>
+<body>
+<div id="loader"><div class="ll">Nuestra Memoria</div><div class="ld"><div class="ldt"></div><div class="ldt"></div><div class="ldt"></div></div></div>
+<div id="intro"><video id="ivid" muted playsinline></video><div class="ic"><div class="it">Para siempre</div><div class="in" id="inames"></div></div><div class="is" onclick="skipIntro()">Continuar →</div></div>
+<div id="app">
+  <section class="hero">
+    <div class="eyb">✦ Memoria Digital ✦</div>
+    <div class="intro-text" id="d-intro"></div>
+    <h1 class="names" id="d-names"></h1>
+    <div class="ddate" id="d-date"></div>
+    <div class="divider"></div>
+    <p class="message" id="d-msg"></p>
+  </section>
+  <section class="cnt-sec">
+    <div class="cnt-lbl">Juntos desde entonces</div>
+    <div class="cnt-row">
+      <div class="cnt-blk"><span class="cnt-n" id="cnt-y">—</span><span class="cnt-u">Años</span></div>
+      <div class="cnt-blk"><span class="cnt-n" id="cnt-m">—</span><span class="cnt-u">Meses</span></div>
+      <div class="cnt-blk"><span class="cnt-n" id="cnt-d">—</span><span class="cnt-u">Días</span></div>
+    </div>
+  </section>
+  <section class="song-sec" id="d-song">
+    <div class="song-lbl">Nuestra canción</div>
+    <div class="song-card"><img id="s-img" src="" class="song-img"><div><div class="song-title" id="s-name"></div><div class="song-artist" id="s-artist"></div></div><div class="bars"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div></div>
+  </section>
+  <section class="photos-sec" id="d-photos">
+    <h2 class="photos-title">Nuestros momentos</h2>
+    <div class="pgrid" id="d-pgrid"></div>
+  </section>
+  <footer class="foot"><div class="foot-brand" id="d-brand">Bless Memorias</div><div class="foot-txt">Con amor, para siempre.</div></footer>
+</div>
+<script>
+var API = window.location.origin;
+var slug = window.location.pathname.replace('/','').toUpperCase();
+window.addEventListener('load',function(){
+  if(!slug){ renderDemo(); return; }
+  fetch(API+'/api/get-memory?slug='+slug).then(function(r){return r.json();}).then(function(d){
+    if(!d.slug){ document.getElementById('loader').innerHTML='<div style="text-align:center;padding:40px;"><div style="font-size:40px;margin-bottom:16px;">💔</div><div style="font-family:Cormorant Garamond,serif;font-size:22px;color:#c9956e;">Memoria no encontrada</div></div>'; return; }
+    render(d);
+  }).catch(function(){ renderDemo(); });
+});
+function renderDemo(){ render({name1:'Valentina',name2:'Sebastián',startDate:'2022-06-15',introText:'Tú & Yo',message:'Gracias por enseñarme lo que es el amor de verdad.',songName:'Tú',songArtist:'Camilo',songArt:'',photos:[]}); }
+function render(d){
+  el('d-intro').textContent = d.introText||'';
+  el('inames').innerHTML = (d.name1||'') + ' <em>&</em> ' + (d.name2||'');
+  el('d-names').innerHTML = (d.name1||'') + ' <em>&</em> ' + (d.name2||'');
+  if(d.startDate){ var dt=new Date(d.startDate+'T12:00:00'); el('d-date').textContent=dt.toLocaleDateString('es-CO',{year:'numeric',month:'long',day:'numeric'}); }
+  if(d.message) el('d-msg').textContent=d.message;
+  if(d.startDate){ counter(d.startDate); }
+  if(d.songName){ el('d-song').style.display='block'; el('s-name').textContent=d.songName; el('s-artist').textContent=d.songArtist||''; if(d.songArt) el('s-img').src=d.songArt; }
+  var ph=d.photos||[]; if(typeof ph==='string'){try{ph=JSON.parse(ph);}catch(e){ph=[];}}
+  if(ph.length){ el('d-photos').style.display='block'; el('d-pgrid').innerHTML=ph.slice(0,5).map(function(u){return '<img src="'+u+'" loading="lazy">';}).join(''); }
+  if(d.videoUrl){ var v=el('ivid'); v.src=d.videoUrl; v.oncanplay=function(){ hideLoader(); el('intro').classList.add('on'); v.play(); v.onended=showApp; }; v.onerror=function(){ showApp(); }; v.load(); }
+  else { setTimeout(function(){ hideLoader(); showApp(); },800); }
+}
+function counter(startDate){ var s=new Date(startDate+'T12:00:00'); (function tick(){ var now=new Date(),diff=now-s,days=Math.floor(diff/86400000); el('cnt-y').textContent=Math.floor(days/365); el('cnt-m').textContent=Math.floor((days%365)/30); el('cnt-d').textContent=days%30; setTimeout(tick,60000); })(); }
+function hideLoader(){ el('loader').style.opacity='0'; setTimeout(function(){el('loader').style.display='none';},500); }
+function showApp(){ el('intro').classList.remove('on'); el('app').classList.add('on'); hideLoader(); }
+function skipIntro(){ el('ivid').pause(); showApp(); }
+function el(id){ return document.getElementById(id); }
+</script>
+</body>
+</html>
