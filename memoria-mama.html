@@ -358,7 +358,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 <script>
 var BASE = window.location.origin;
-var slug = window.location.pathname.replace('/','').toUpperCase();
+var slug = window.location.pathname.split('/').filter(Boolean).pop().toUpperCase();
 var memData = null;
 
 // ── HEARTS ────────────────────────────────────────────────────
